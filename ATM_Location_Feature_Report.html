@@ -337,10 +337,38 @@
             margin-bottom: 50px;
         }
 
+        .iframe-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .iframe-card {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .iframe-header {
+            padding: 12px 16px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+        }
+
+        .iframe-header.nice {
+            background: linear-gradient(135deg, #007aff, #5856d6);
+        }
+
+        .iframe-header.hyosung {
+            background: linear-gradient(135deg, #34c759, #30d158);
+        }
+
         .iframe-container {
             width: 100%;
-            height: 600px;
-            border-radius: 12px;
+            height: 500px;
+            border-radius: 0 0 12px 12px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             background: #f5f5f7;
@@ -362,6 +390,12 @@
 
         .preview-link:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            .iframe-row {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 768px) {
@@ -393,17 +427,39 @@
         <!-- Live Preview Section -->
         <section class="live-preview-section">
             <h2>Live ATM Search</h2>
-            <div class="iframe-container">
-                <iframe
-                    src="https://www.checkpay.co.kr/atm_search.act?ATM_ORG_CD=ATM00004&TRX_TP=0"
-                    title="ATM Search"
-                    allow="geolocation"
-                    loading="lazy">
-                </iframe>
+            <div class="iframe-row">
+                <!-- Nice ATM -->
+                <div class="iframe-card">
+                    <div class="iframe-header nice">Nice ATM</div>
+                    <div class="iframe-container">
+                        <iframe
+                            src="https://www.checkpay.co.kr/atm_search.act?ATM_ORG_CD=ATM00004&TRX_TP=0"
+                            title="Nice ATM Search"
+                            allow="geolocation"
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                    <a href="https://www.checkpay.co.kr/atm_search.act?ATM_ORG_CD=ATM00004&TRX_TP=0" target="_blank" class="preview-link">
+                        Open Nice ATM ↗
+                    </a>
+                </div>
+
+                <!-- Hyosung ATM (Google Maps) -->
+                <div class="iframe-card">
+                    <div class="iframe-header hyosung">Hyosung ATM (Google Maps)</div>
+                    <div class="iframe-container">
+                        <iframe
+                            src="https://www.google.co.kr/maps/search/%ED%9A%A8%EC%84%B1+atm+/@37.574319,126.9903984,14z/data=!3m1!4b1?hl=en"
+                            title="Hyosung ATM Search"
+                            allow="geolocation"
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                    <a href="https://www.google.co.kr/maps/search/%ED%9A%A8%EC%84%B1+atm+/@37.574319,126.9903984,14z/data=!3m1!4b1?hl=en" target="_blank" class="preview-link">
+                        Open Hyosung ATM ↗
+                    </a>
+                </div>
             </div>
-            <a href="https://www.checkpay.co.kr/atm_search.act?ATM_ORG_CD=ATM00004&TRX_TP=0" target="_blank" class="preview-link">
-                Open in new tab ↗
-            </a>
         </section>
 
         <!-- User Flow Section -->
