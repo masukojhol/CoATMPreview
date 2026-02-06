@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Search Location Feature Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #86868b;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #1d1d1f;
+            border-bottom: 2px solid #e5e5e7;
+            padding-bottom: 10px;
+        }
+
+        /* User Flow Section */
+        .user-flow-section {
+            margin-bottom: 50px;
+        }
+
+        .flow-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .flow-image-container {
+            flex: 0 0 280px;
+        }
+
+        .flow-image-container img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .flow-image-caption {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #86868b;
+        }
+
+        .flow-steps {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .flow-step:hover {
+            transform: translateX(5px);
+        }
+
+        .step-number {
+            flex: 0 0 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #007aff, #5856d6);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .step-number.allow {
+            background: linear-gradient(135deg, #34c759, #30d158);
+        }
+
+        .step-number.deny {
+            background: linear-gradient(135deg, #ff9500, #ff9f0a);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 6px;
+            color: #1d1d1f;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #6e6e73;
+        }
+
+        .prompt-text {
+            display: inline-block;
+            background: #f0f0f5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1d1d1f;
+            margin-top: 8px;
+            border-left: 3px solid #007aff;
+        }
+
+        /* Comparison Section */
+        .comparison-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .case-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-header {
+            padding: 16px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .allow-header {
+            background: linear-gradient(135deg, #34c759, #30d158);
+            color: white;
+        }
+
+        .deny-header {
+            background: linear-gradient(135deg, #ff9500, #ff9f0a);
+            color: white;
+        }
+
+        .case-content {
+            padding: 20px;
+            background: #fafafa;
+        }
+
+        .case-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .case-description {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1d1d1f;
+            border-left: 4px solid;
+        }
+
+        .allow-description {
+            border-left-color: #34c759;
+        }
+
+        .deny-description {
+            border-left-color: #ff9500;
+        }
+
+        .location-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        .allow-badge {
+            background: #e8f9ed;
+            color: #1e7e34;
+        }
+
+        .deny-badge {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* Settings Section */
+        .settings-section {
+            margin-top: 40px;
+            padding: 24px;
+            background: #f5f5f7;
+            border-radius: 12px;
+        }
+
+        .settings-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+
+        .settings-content {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .settings-image {
+            flex: 0 0 200px;
+        }
+
+        .settings-image img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .settings-info p {
+            font-size: 14px;
+            color: #6e6e73;
+            margin-bottom: 12px;
+        }
+
+        .settings-path {
+            display: inline-block;
+            background: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1d1d1f;
+            font-family: 'SF Mono', Monaco, monospace;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+
+        .summary-table th,
+        .summary-table td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e7;
+        }
+
+        .summary-table th {
+            background: #f5f5f7;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .summary-table tr:hover {
+            background: #fafafa;
+        }
+
+        .status-allow {
+            color: #34c759;
+            font-weight: 500;
+        }
+
+        .status-deny {
+            color: #ff9500;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e7;
+            text-align: center;
+            color: #86868b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .case-card {
+                max-width: 100%;
+            }
+
+            .flow-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .flow-image-container {
+                flex: 0 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ATM Search Location Feature</h1>
+        <p class="subtitle">checkpay.co.kr - Location Permission Behavior Report</p>
+
+        <!-- User Flow Section -->
+        <section class="user-flow-section">
+            <h2>User Flow</h2>
+
+            <div class="flow-container">
+                <div class="flow-image-container">
+                    <img src="promptAlert.jpeg" alt="Location Permission Prompt">
+                    <p class="flow-image-caption">Location Permission Prompt</p>
+                </div>
+
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">First Visit</div>
+                            <div class="step-description">
+                                System prompts for location permission
+                                <div class="prompt-text">
+                                    "checkpay.co.kr" Would Like to Use Your Location<br>
+                                    Would you like to allow "checkpay.co.kr" to have access to your precise location?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="step-number allow">2</div>
+                        <div class="step-content">
+                            <div class="step-title">If Allow</div>
+                            <div class="step-description">
+                                Map centers on user's <strong>actual location</strong> for convenient nearby ATM search
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-step">
+                        <div class="step-number deny">3</div>
+                        <div class="step-content">
+                            <div class="step-title">If Don't Allow</div>
+                            <div class="step-description">
+                                Map displays <strong>Seoul City Hall</strong> area as a central reference point, allowing users to manually navigate to their desired location
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <h2>How It Works</h2>
+
+        <div class="comparison-container">
+            <!-- Allow Case -->
+            <div class="case-card">
+                <div class="case-header allow-header">
+                    Allow Location Permission
+                </div>
+                <div class="case-content">
+                    <img src="allow_case.jpeg" alt="Allow Location - Shows current location">
+                    <div class="case-description allow-description">
+                        <strong>Result:</strong> Map centers on user's <strong>current location</strong>
+                        <br><br>
+                        User can easily find nearby ATMs based on their actual position.
+                        <div class="location-badge allow-badge">Yeongdeungpo-gu Area</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deny Case -->
+            <div class="case-card">
+                <div class="case-header deny-header">
+                    Deny Location Permission
+                </div>
+                <div class="case-content">
+                    <img src="deny_case.jpeg" alt="Deny Location - Shows Seoul City Hall">
+                    <div class="case-description deny-description">
+                        <strong>Result:</strong> Map centers on <strong>Seoul City Hall</strong> (default)
+                        <br><br>
+                        User can manually navigate to find ATMs in their desired area.
+                        <div class="location-badge deny-badge">Seoul City Hall (서울특별시청)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="settings-section">
+            <h3>Changing Location Permission</h3>
+            <div class="settings-content">
+                <div class="settings-image">
+                    <img src="localtion_change.jpeg" alt="Safari Location Settings">
+                </div>
+                <div class="settings-info">
+                    <p>Users can change their location permission preference at any time through Safari's Page Menu.</p>
+                    <div class="settings-path">
+                        Page Menu → Website Settings → Location → Allow / Deny
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Table -->
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>User Action</th>
+                    <th>Map Display</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="status-allow">Allow location permission</td>
+                    <td>Shows user's current location</td>
+                    <td>e.g., Yeongdeungpo-gu area</td>
+                </tr>
+                <tr>
+                    <td class="status-deny">Deny location permission</td>
+                    <td>Shows default center point</td>
+                    <td>Seoul City Hall (서울특별시청)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <p>GME Remit - ATM Location Feature Report</p>
+            <p>Generated: February 2026</p>
+        </div>
+    </div>
+</body>
+</html>
